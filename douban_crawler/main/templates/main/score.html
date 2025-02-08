@@ -28,61 +28,32 @@
   <!-- ======= 头部 ======= -->
   <header id="header">
     <div class="container">
-
       <div class="logo float-left">
         <h1 class="text-light"><a href="{% url 'index' %}"><span>豆瓣电影TOP250</span></a></h1>
       </div>
-
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
-          <li class="active"><a href="{% url 'index' %}">首页 <i class="la la-angle-down"></i></a></li>
+          <li><a href="{% url 'index' %}">首页 <i class="la la-angle-down"></i></a></li>
           <li><a href="{% url 'movie' %}">电影</a></li>
-          <li><a href="{% url 'score' %}">评分</a></li>
+          <li class="active"><a href="{% url 'score' %}">评分</a></li>
           <li><a href="{% url 'word' %}">词云</a></li>
         </ul>
-      </nav><!-- .nav-menu -->
+      </nav>
 
     </div>
-  </header><!-- End Header -->
-  <!-- ======= 首页标题 ======= -->
+  </header>
+  <!-- ======= 标题 ======= -->
   <section id="team" class="team">
     <div class="container">
-
       <div class="section-title">
         <h2>豆瓣电影TOP250数据分析</h2>
         <p>应用Python爬虫/Flask框架/Echarts插件/WordCloud等技术实现</p>
       </div>
-    </div>
-  </section>
-  <!-- ======= 小盒子 ======= -->
-  <section class="counts section-bg">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up">
-          <div class="count-box">
-            <i class="icofont-simple-smile" style="color: #20b38e;"></i>
-            <span data-toggle="counter-up">{{ movie_number }}</span>
-            <p>经典电影</p>
-          </div>
+      <section class="counts section-bg">
+        <div class="container">
+          <div id="main" style="width: 100%;height:350px;"></div>
         </div>
-
-        <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="200">
-          <div class="count-box">
-            <i class="icofont-document-folder" style="color: #c042ff;"></i>
-            <span data-toggle="counter-up">{{ score_statistics }}</span>
-            <p>评分统计</p>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="400">
-          <div class="count-box">
-            <i class="icofont-live-support" style="color: #46d1ff;"></i>
-            <span data-toggle="counter-up">{{ vocabulary_statistics }}</span>
-            <p>词汇统计</p>
-          </div>
-        </div>
-      </div>
-
+      </section>
     </div>
   </section>
   <!-- ======= 页脚 ======= -->
@@ -92,6 +63,7 @@
       <div class="credits"></div>
     </div>
   </footer>
+
   <!-- ======= 回到顶部 ======= -->
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
   <!-- 第三方JS -->
@@ -106,6 +78,46 @@
   <script src="{% static 'main/assets/vendor/aos/aos.js' %}"></script>
   <!-- 模版主JS -->
   <script src="{% static 'main/assets/js/main.js' %}"></script>
+
+  <script type="text/javascript">
+    let chartDom = document.getElementById('main');
+    let myChart = echarts.init(chartDom);
+    let option;
+
+    option = {
+        color : ['#3398DB'],
+        title :{
+            text : '电影评分'
+        },
+        tooltip : {
+          trigger : 'axis',
+          axisPointer : {
+              type : 'shadow',
+          }
+        },
+        grid : {
+            left : '3%',
+            right : '4%',
+            bottom : '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type : 'category',
+            data: []
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: [],
+            type: 'bar',
+            barWidth : '60%'
+          }
+        ]
+      }
+    option && myChart.setOption(option);
+  </script>
 </body>
 
 </html>

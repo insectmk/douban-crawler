@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
   <title>Home</title>
   <meta content="" name="descriptison">
   <meta content="" name="keywords">
@@ -22,6 +23,13 @@
   <link href="{% static 'main/assets/vendor/aos/aos.css' %}" rel="stylesheet">
   <!-- 模版主要样式 -->
   <link href="{% static 'main/assets/css/style.css' %}" rel="stylesheet">
+  <style>
+    #page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -30,59 +38,54 @@
     <div class="container">
 
       <div class="logo float-left">
-        <h1 class="text-light"><a href="{% url 'index' %}"><span>豆瓣电影TOP250</span></a></h1>
+        <h1 class="text-light"><a href="index.html"><span>豆瓣电影TOP250</span></a></h1>
       </div>
-
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
-          <li class="active"><a href="{% url 'index' %}">首页 <i class="la la-angle-down"></i></a></li>
-          <li><a href="{% url 'movie' %}">电影</a></li>
+          <li><a href="{% url 'index' %}">首页 <i class="la la-angle-down"></i></a></li>
+          <li class="active"><a href="{% url 'movie' %}">电影</a></li>
           <li><a href="{% url 'score' %}">评分</a></li>
           <li><a href="{% url 'word' %}">词云</a></li>
         </ul>
-      </nav><!-- .nav-menu -->
-
+      </nav>
     </div>
-  </header><!-- End Header -->
-  <!-- ======= 首页标题 ======= -->
+  </header>
+  <!-- ======= 标题 ======= -->
   <section id="team" class="team">
     <div class="container">
-
       <div class="section-title">
         <h2>豆瓣电影TOP250数据分析</h2>
         <p>应用Python爬虫/Flask框架/Echarts插件/WordCloud等技术实现</p>
       </div>
     </div>
+    <div>
+      <form action="" method="GET" class="d-flex justify-content-start">
+          <div class="form-group mx-sm-3 mb-2">
+              <input type="text" class="form-control" name="q" placeholder="请输入电影名称" aria-label="输入电影名称" aria-describedby="basic-addon1">
+          </div>
+          <button type="submit" class="btn btn-primary mb-2">搜索/重置</button>
+      </form>
+    </div>
   </section>
-  <!-- ======= 小盒子 ======= -->
+
   <section class="counts section-bg">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up">
-          <div class="count-box">
-            <i class="icofont-simple-smile" style="color: #20b38e;"></i>
-            <span data-toggle="counter-up">{{ movie_number }}</span>
-            <p>经典电影</p>
-          </div>
-        </div>
+    <div class="container table-responsive">
+      <table class="table text-nowrap">
+        <tr class="text-center">
+          <td>电影排名</td>
+          <td>电影中文名称</td>
+          <td>电影外国名称</td>
+          <td>电影评分</td>
+          <td>评价人数</td>
+          <td>电影简述</td>
+          <td>其他信息</td>
+        </tr>
+      </table>
+      <nav id="page">
+        <ul class="pagination">
 
-        <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="200">
-          <div class="count-box">
-            <i class="icofont-document-folder" style="color: #c042ff;"></i>
-            <span data-toggle="counter-up">{{ score_statistics }}</span>
-            <p>评分统计</p>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="400">
-          <div class="count-box">
-            <i class="icofont-live-support" style="color: #46d1ff;"></i>
-            <span data-toggle="counter-up">{{ vocabulary_statistics }}</span>
-            <p>词汇统计</p>
-          </div>
-        </div>
-      </div>
-
+        </ul>
+      </nav>
     </div>
   </section>
   <!-- ======= 页脚 ======= -->
@@ -92,6 +95,7 @@
       <div class="credits"></div>
     </div>
   </footer>
+
   <!-- ======= 回到顶部 ======= -->
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
   <!-- 第三方JS -->
