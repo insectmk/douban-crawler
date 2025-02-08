@@ -126,7 +126,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
+# 浏览器中访问的url路径
 STATIC_URL = 'static/'
 
 # Default primary key field type
