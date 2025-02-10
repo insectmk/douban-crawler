@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Home</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+  <!-- 图标 -->
+  <link href="{% static 'main/assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'main/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+  <!-- 字体 -->
+  <link href="{% static 'main/assets/vendor/google/fonts.css' %}" rel="stylesheet">
+  <!-- 第三方CSS -->
+  <link href="{% static 'main/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'main/assets/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+  <link href="{% static 'main/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'main/assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'main/assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
+  <link href="{% static 'main/assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <!-- 模版主要样式 -->
+  <link href="{% static 'main/assets/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+  <!-- ======= 头部 ======= -->
+  <header id="header">
+    <div class="container">
+      <div class="logo float-left">
+        <h1 class="text-light"><a href="{% url 'index' %}"><span>豆瓣电影TOP250</span></a></h1>
+      </div>
+      <!-- ======= 导航栏 ======= -->
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+          <li {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>
+            <a href="{% url 'index' %}">首页</a>
+          </li>
+          <li {% if request.resolver_match.url_name == 'movie' %}class="active"{% endif %}>
+            <a href="{% url 'movie' %}">电影</a>
+          </li>
+          <li {% if request.resolver_match.url_name == 'score' %}class="active"{% endif %}>
+            <a href="{% url 'score' %}">统计</a>
+          </li>
+          <li {% if request.resolver_match.url_name == 'word' %}class="active"{% endif %}>
+            <a href="{% url 'word' %}">词云</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <!-- 主内容 -->
+  <main>
+    <!-- 主内容自定义 -->
+    {% block content %}{% endblock %}
+  </main>
+  <!-- ======= 页脚 ======= -->
+  <footer id="footer">
+    <div class="container">
+      <div class="copyright">&copy; 2025 by
+        <a href="https://insectmk.cn"
+           target="_blank"
+           style="color: #fafafa;font-weight: 600;">InsectMk</a>
+      </div>
+      <div class="credits"></div>
+    </div>
+  </footer>
+  <!-- ======= 回到顶部 ======= -->
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+  <!-- 第三方JS -->
+  <script src="{% static 'main/assets/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/jquery-sticky/jquery.sticky.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/venobox/venobox.min.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/counterup/counterup.min.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/aos/aos.js' %}"></script>
+  <!-- 模版主JS -->
+  <script src="{% static 'main/assets/js/main.js' %}"></script>
+  <!-- 自定义脚本内容 -->
+  {% block script %}{% endblock %}
+</body>
+</html>
