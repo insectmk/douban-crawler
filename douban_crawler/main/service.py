@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg') # 无GUI模式
 from bs4 import BeautifulSoup  # 网页解析，获取数据
 import re  # 正则表达式，进行文字匹配`
 import urllib.request, urllib.error  # 制定URL，获取网页数据
@@ -11,6 +13,7 @@ import matplotlib.pyplot as plt # 词云
 import numpy as np # 矩阵运算
 import os # 系统操作
 from django.conf import settings # 设置
+from . import config
 
 #要爬取的网页链接
 baseurl = "https://movie.douban.com/top250?start="
@@ -37,7 +40,7 @@ def _get_data_from_web():
     movies = []  # 用来存储爬取的网页信息
     for i in range(0, 10):  # 调用获取页面信息的函数，10次
         # 随机延时
-        delay = random.uniform(1, 5)
+        delay = random.uniform(1, 4)
         time.sleep(delay)
         url = baseurl + str(i * 25)
         html = _ask_url(url)  # 保存获取到的网页源码
@@ -149,10 +152,7 @@ def _cut_dada():
 """
 def _ask_url(url):
     # 模拟浏览器头部信息，向豆瓣服务器发送消息
-    head = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"
-    }
-
+    head = config.CRAWLER_HEADERS # 请求头
     request = urllib.request.Request(url, headers=head, )
     html = ""
     try:
