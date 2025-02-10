@@ -41,11 +41,17 @@ def movie(request):
     return render(request, "main/movie.html", context)
 
 """
-页面：评分
+页面：评分（统计页面）
 """
 def score(request):
-    # 给前端传递参数
-    context = {}
+    # 获取前10图表数据
+    movie_chart = service.get_movie_chart_rating_judge(10)
+    # 给模版传递参数
+    context = {
+        'names': movie_chart['names'],  # 电影名列表
+        'ratings': movie_chart['ratings'],  # 电影评分列表
+        'num_judges': movie_chart['num_judges'],  # 电影评论数列表
+    }
     # 渲染数据
     return render(request, "main/score.html", context)
 

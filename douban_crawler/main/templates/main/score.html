@@ -42,20 +42,18 @@
 
     </div>
   </header>
-  <!-- ======= 标题 ======= -->
-  <section id="team" class="team">
-    <div class="container">
-      <div class="section-title">
-        <h2>豆瓣电影TOP250数据分析</h2>
-        <p>应用Python爬虫/Django框架/Echarts插件/WordCloud等技术实现</p>
-      </div>
-      <section class="counts section-bg">
-        <div class="container">
-          <div id="main" style="width: 100%;height:350px;"></div>
-        </div>
-      </section>
+  <!-- ======= 主内容 ======= -->
+  <div class="container">
+    <!-- ======= 标题 ======= -->
+    <div class="section-title">
+      <h2>豆瓣电影TOP250图表展示</h2>
+      <p>此页面使用Django模版/Echarts图表库实现</p>
     </div>
-  </section>
+    <!-- ======= 图表-前十评分与评价人数 ======= -->
+    <div id="charts-rating-judge" style="width: 100%;height:350px;"></div>
+    <!-- ======= 图表-评分分布情况 ======= -->
+    <div id="charts-rating-statistics" style="width: 100%;height:350px;"></div>
+  </div>
   <!-- ======= 页脚 ======= -->
   <footer id="footer">
     <div class="container">
@@ -76,48 +74,64 @@
   <script src="{% static 'main/assets/vendor/counterup/counterup.min.js' %}"></script>
   <script src="{% static 'main/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
   <script src="{% static 'main/assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/echarts/echarts.min.js' %}"></script>
   <!-- 模版主JS -->
   <script src="{% static 'main/assets/js/main.js' %}"></script>
-
-  <script type="text/javascript">
-    let chartDom = document.getElementById('main');
-    let myChart = echarts.init(chartDom);
-    let option;
-
-    option = {
-        color : ['#3398DB'],
-        title :{
-            text : '电影评分'
-        },
-        tooltip : {
-          trigger : 'axis',
-          axisPointer : {
-              type : 'shadow',
-          }
-        },
-        grid : {
-            left : '3%',
-            right : '4%',
-            bottom : '3%',
-            containLabel: true
-        },
-        xAxis: {
-            type : 'category',
-            data: []
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            data: [],
-            type: 'bar',
-            barWidth : '60%'
-          }
-        ]
-      }
-    option && myChart.setOption(option);
-  </script>
 </body>
-
 </html>
+<!-- 自定义JS -->
+<script type="text/javascript">
+const myChart = echarts.init(document.getElementById('charts-rating-judge'))
+
+const option = {
+  title: {
+    text: 'TOP10评分统计'
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  legend: {
+    data: ['评分', '评价人数']
+  },
+  xAxis: {
+    type: 'category',
+    data: {{ names|safe }}  // 电影名列表
+  },
+  yAxis: [
+    {
+      type: 'value',
+      name: '评分',
+      min: 0,
+      max: 10,  // 评分范围0-10
+      position: 'left',
+      axisLabel: {
+        formatter: '{value}'
+      }
+    },
+    {
+      type: 'value',
+      name: '评价人数',
+      min: 0,
+      position: 'right',
+      axisLabel: {
+        formatter: '{value}'
+      }
+    }
+  ],
+  series: [
+    {
+      name: '评分',
+      type: 'bar',
+      data: {{ ratings|safe }}  // 评分列表
+    },
+    {
+      name: '评价人数',
+      type: 'line',  // 使用折线图
+      yAxisIndex: 1,
+      data: {{ num_judges|safe }}  // 评价人数列表
+    }
+  ]
+}
+
+myChart.setOption(option)
+</script>

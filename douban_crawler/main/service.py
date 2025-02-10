@@ -28,6 +28,18 @@ find_num_judge = re.compile(r'<span>(\d*)人评价</span>') # 评价人数
 find_inq = re.compile(r'<span class="inq">(.*)</span>') # 简述
 find_other_info = re.compile(r'<p class="">(.*?)</p>', re.S) # 相关信息
 
+"""获取电影前十图表数据（评分+评价数）
+"""
+def get_movie_chart_rating_judge(top_num=10):
+    # 获取所有电影数据
+    movies = Movies.objects.all().order_by('rank')[:top_num]  # 按排名排序，指定前top_num的数据
+    # 准备数据
+    return {
+        'names': [movie.name for movie in movies], # 电影名列表
+        'ratings': [movie.rating for movie in movies], # 电影评分列表
+        'num_judges': [movie.num_judge for movie in movies], # 电影评论数列表
+    }
+
 """获取电影的评分范围
 """
 def get_rating_range():
