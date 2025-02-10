@@ -1,49 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends './component/frame.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Home</title>
-  <meta content="" name="descriptison">
-  <meta content="" name="keywords">
-  {% load static %}
-  <!-- 图标 -->
-  <link href="{% static 'main/assets/img/favicon.png' %}" rel="icon">
-  <link href="{% static 'main/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
-  <!-- 字体 -->
-  <link href="{% static 'main/assets/vendor/google/fonts.css' %}" rel="stylesheet">
-  <!-- 第三方CSS -->
-  <link href="{% static 'main/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/aos/aos.css' %}" rel="stylesheet">
-  <!-- 模版主要样式 -->
-  <link href="{% static 'main/assets/css/style.css' %}" rel="stylesheet">
-</head>
-
-<body>
-  <!-- ======= 头部 ======= -->
-  <header id="header">
-    <div class="container">
-
-      <div class="logo float-left">
-        <h1 class="text-light"><a href="{% url 'index' %}"><span>豆瓣电影TOP250</span></a></h1>
-      </div>
-
-      <nav class="nav-menu float-right d-none d-lg-block">
-        <ul>
-          <li class="active"><a href="{% url 'index' %}">首页 <i class="la la-angle-down"></i></a></li>
-          <li><a href="{% url 'movie' %}">电影</a></li>
-          <li><a href="{% url 'score' %}">统计</a></li>
-          <li><a href="{% url 'word' %}">词云</a></li>
-        </ul>
-      </nav><!-- .nav-menu -->
-
-    </div>
-  </header><!-- End Header -->
+{% block content %}
   <!-- ======= 首页标题 ======= -->
   <section id="team" class="team">
     <div class="container">
@@ -56,56 +13,33 @@
   </section>
   <!-- ======= 小盒子 ======= -->
   <section class="counts section-bg">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up">
-          <div class="count-box">
-            <i class="icofont-movie" style="color: #20b38e;"></i>
-            <span data-toggle="counter-up">{{ movies_count }}</span>
-            <p>经典电影</p>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="200">
-          <div class="count-box">
-            <i class="icofont-ui-rating" style="color: #c042ff;"></i>
-            <span>{{ rating_range }}</span>
-            <p>评分统计</p>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="400">
-          <div class="count-box">
-            <i class="icofont-book-alt" style="color: #46d1ff;"></i>
-            <span data-toggle="counter-up">{{ words_count }}</span>
-            <p>词汇统计</p>
-          </div>
-        </div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up">
+      <div class="count-box">
+        <i class="icofont-movie" style="color: #20b38e;"></i>
+        <span data-toggle="counter-up">{{ movies_count }}</span>
+        <p>经典电影</p>
       </div>
-
     </div>
-  </section>
-  <!-- ======= 页脚 ======= -->
-  <footer id="footer">
-    <div class="container">
-      <div class="copyright">&copy; 2025 by InsectMk</div>
-      <div class="credits"></div>
-    </div>
-  </footer>
-  <!-- ======= 回到顶部 ======= -->
-  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
-  <!-- 第三方JS -->
-  <script src="{% static 'main/assets/vendor/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/jquery-sticky/jquery.sticky.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/venobox/venobox.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/counterup/counterup.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/aos/aos.js' %}"></script>
-  <!-- 模版主JS -->
-  <script src="{% static 'main/assets/js/main.js' %}"></script>
-</body>
 
-</html>
+    <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="200">
+      <div class="count-box">
+        <i class="icofont-ui-rating" style="color: #c042ff;"></i>
+        <span>{{ rating_range }}</span>
+        <p>评分统计</p>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="400">
+      <div class="count-box">
+        <i class="icofont-book-alt" style="color: #46d1ff;"></i>
+        <span data-toggle="counter-up">{{ words_count }}</span>
+        <p>词汇统计</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+{% endblock %}

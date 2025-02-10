@@ -1,133 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends './component/frame.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Home</title>
-  <meta content="" name="descriptison">
-  <meta content="" name="keywords">
-  {% load static %}
-  <!-- 图标 -->
-  <link href="{% static 'main/assets/img/favicon.png' %}" rel="icon">
-  <link href="{% static 'main/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
-  <!-- 字体 -->
-  <link href="{% static 'main/assets/vendor/google/fonts.css' %}" rel="stylesheet">
-  <!-- 第三方CSS -->
-  <link href="{% static 'main/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
-  <link href="{% static 'main/assets/vendor/aos/aos.css' %}" rel="stylesheet">
-  <!-- 模版主要样式 -->
-  <link href="{% static 'main/assets/css/style.css' %}" rel="stylesheet">
-  <style>
-    #page {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  </style>
-</head>
-
-<body>
-  <!-- ======= 头部 ======= -->
-  <header id="header">
-    <div class="container">
-      <div class="logo float-left">
-        <h1 class="text-light"><a href="{% url 'index' %}"><span>豆瓣电影TOP250</span></a></h1>
-      </div>
-      <nav class="nav-menu float-right d-none d-lg-block">
-        <ul>
-          <li><a href="{% url 'index' %}">首页 <i class="la la-angle-down"></i></a></li>
-          <li class="active"><a href="{% url 'movie' %}">电影</a></li>
-          <li><a href="{% url 'score' %}">统计</a></li>
-          <li><a href="{% url 'word' %}">词云</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <!-- ======= 标题 ======= -->
-  <div class="container">
-    <div class="section-title">
-      <h2>豆瓣电影TOP250数据展示</h2>
-      <p>此页面使用Django模版/Bootstrap4前端组件实现</p>
-    </div>
-    <table class="table text-nowrap
-      table-responsive table-striped
-      table-hover table-sm">
-      <thead>
+{% block content %}
+<div class="container">
+  <div class="section-title">
+    <h2>豆瓣电影TOP250数据展示</h2>
+    <p>此页面使用Django模版/Bootstrap4前端组件实现</p>
+  </div>
+  <table class="table text-nowrap
+    table-responsive table-striped
+    table-hover table-sm">
+    <thead>
+      <tr class="text-center">
+        <th>排名</th>
+        <th>中文名称</th>
+        <th>评分</th>
+        <th>评价人数</th>
+        <th>简述</th>
+        <th>其他信息</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for movie in movies %}
         <tr class="text-center">
-          <th>排名</th>
-          <th>中文名称</th>
-          <th>评分</th>
-          <th>评价人数</th>
-          <th>简述</th>
-          <th>其他信息</th>
+           <td>{{ movie.rank }}</td>
+           <td>
+               <a href="{{ movie.detail_url }}" target="_blank">
+                   {{ movie.name }}
+               </a>
+           </td>
+           <td>{{ movie.rating }}</td>
+           <td>{{ movie.num_judge }}</td>
+           <td>{{ movie.inq }}</td>
+           <td>{{ movie.other_info }}</td>
         </tr>
-      </thead>
-      <tbody>
-      {% for movie in movies %}
-          <tr class="text-center">
-             <td>{{ movie.rank }}</td>
-             <td>
-                 <a href="{{ movie.detail_url }}" target="_blank">
-                     {{ movie.name }}
-                 </a>
-             </td>
-             <td>{{ movie.rating }}</td>
-             <td>{{ movie.num_judge }}</td>
-             <td>{{ movie.inq }}</td>
-             <td>{{ movie.other_info }}</td>
-          </tr>
-     {% endfor %}
-      </tbody>
-    </table>
-    <!-- ======= 分页 ======= -->
-    <ul class="pagination d-flex justify-content-end">
-      <li class="page-item {% if cur_page == 1 %}disabled{% endif %}">
-        <a class="page-link" href="{% url 'movie' %}?p={{ cur_page|add:-1 }}" aria-label="上一页">
-          <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">上一页</span>
-        </a>
+   {% endfor %}
+    </tbody>
+  </table>
+  <!-- ======= 分页 ======= -->
+  <ul class="pagination d-flex justify-content-end">
+    <li class="page-item {% if cur_page == 1 %}disabled{% endif %}">
+      <a class="page-link" href="{% url 'movie' %}?p={{ cur_page|add:-1 }}" aria-label="上一页">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">上一页</span>
+      </a>
+    </li>
+    {% for page_num in pages %}
+      <li class="page-item {% if cur_page == page_num %}active{% endif %}">
+        <a class="page-link" href="{% url 'movie' %}?p={{ page_num }}">{{ page_num }}</a>
       </li>
-      {% for page_num in pages %}
-        <li class="page-item {% if cur_page == page_num %}active{% endif %}">
-          <a class="page-link" href="{% url 'movie' %}?p={{ page_num }}">{{ page_num }}</a>
-        </li>
-      {% endfor %}
-      <li class="page-item {% if cur_page == total_pages %}disabled{% endif %}">
-        <a class="page-link" href="{% url 'movie' %}?p={{ cur_page|add:1 }}" aria-label="下一页">
-          <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only">下一页</span>
-        </a>
-      </li>
-      </ul>
-    </div>
-  <!-- ======= 页脚 ======= -->
-  <footer id="footer">
-    <div class="container">
-      <div class="copyright">&copy; 2025 by InsectMk</div>
-      <div class="credits"></div>
-    </div>
-  </footer>
-
-  <!-- ======= 回到顶部 ======= -->
-  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
-  <!-- 第三方JS -->
-  <script src="{% static 'main/assets/vendor/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/jquery-sticky/jquery.sticky.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/venobox/venobox.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/counterup/counterup.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/aos/aos.js' %}"></script>
-  <!-- 模版主JS -->
-  <script src="{% static 'main/assets/js/main.js' %}"></script>
-</body>
-
-</html>
+    {% endfor %}
+    <li class="page-item {% if cur_page == total_pages %}disabled{% endif %}">
+      <a class="page-link" href="{% url 'movie' %}?p={{ cur_page|add:1 }}" aria-label="下一页">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">下一页</span>
+      </a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
