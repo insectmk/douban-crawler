@@ -14,7 +14,8 @@ import numpy as np # 矩阵运算
 import os # 系统操作
 from django.conf import settings # 设置
 from . import config # 自定义配置
-from django.db.models  import Min, Max
+from django.db.models  import Min, Max # 最大最小值
+from django.core.paginator import Paginator # 分页
 
 #要爬取的网页链接
 baseurl = "https://movie.douban.com/top250?start="
@@ -27,8 +28,7 @@ find_num_judge = re.compile(r'<span>(\d*)人评价</span>') # 评价人数
 find_inq = re.compile(r'<span class="inq">(.*)</span>') # 简述
 find_other_info = re.compile(r'<p class="">(.*?)</p>', re.S) # 相关信息
 
-"""
-获取电影的评分范围
+"""获取电影的评分范围
 """
 def get_rating_range():
     # 获取所有电影数据，并根据排名排序
@@ -38,13 +38,26 @@ def get_rating_range():
         min_rating=Min('rating'),
         max_rating=Max('rating')
     )
+"""分页获取电影
+参数:
+    page_num: 当前页，默认1
+    page_size: 页面大小，默认25
 """
-获取所有的电影
+def get_movies_page(page_num = 1, page_size = 20):
+    # 获取所有电影数据，并根据排名排序
+    movies = Movies.objects.all().order_by('rank')
+    paginator = Paginator(movies, page_size)  # 分页查询
+    return {
+        'movies': paginator.get_page(page_num),
+        'page_num': page_num, # 当前页
+        'page_size': page_size, # 每页行数
+        'total_pages': paginator.num_pages, # 总页数
+    }
+"""获取所有电影
 """
 def get_movies():
-    # 获取所有电影数据，并根据排名排序
+    # 获取所有电影
     return Movies.objects.all().order_by('rank')
-
 """
 爬取豆瓣top250电影数据
 """
