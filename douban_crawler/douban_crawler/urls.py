@@ -21,5 +21,5 @@ from django.urls import path,include
 # 全局路由配置
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('main/', include('main.urls')), # 主程序
+    path('', include('main.urls')), # 主程序
 ]
