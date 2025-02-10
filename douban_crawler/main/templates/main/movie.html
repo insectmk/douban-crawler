@@ -6,20 +6,19 @@
     <h2>豆瓣电影TOP250数据展示</h2>
     <p>此页面使用Django模版/Bootstrap4前端组件实现</p>
   </div>
-  <table class="table text-nowrap
-    table-responsive table-striped
-    table-hover table-sm">
+  <table class="table table-striped
+    table-hover table-sm align-middle">
     <thead>
       <tr class="text-center">
-        <th>排名</th>
+        <th class="col-1">排名</th>
         <th>中文名称</th>
-        <th>评分</th>
-        <th>评价人数</th>
+        <th class="col-1">评分</th>
+        <th class="col-1">评价人数</th>
         <th>简述</th>
         <th>其他信息</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
     {% for movie in movies %}
         <tr class="text-center">
            <td>{{ movie.rank }}</td>
