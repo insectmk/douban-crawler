@@ -6,10 +6,13 @@ from . import service
 页面：首页
 """
 def index(request):
-    # 获取所有的电影
-    movies = service.get_movies()
+    rating_range = service.get_rating_range()
     # 给前端传递参数
-    context = {"movies": movies}
+    context = {
+        "movies_count": len(service.get_movies()),  # 电影数量
+        "rating_range": f"{rating_range['min_rating']}~{rating_range['max_rating']}",  # 评分范围
+        "words_count": len(list(service.cut_dada())),  # 词汇统计
+    }
     # 渲染数据
     return render(request, "main/index.html", context)
 
