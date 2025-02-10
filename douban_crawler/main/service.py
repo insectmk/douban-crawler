@@ -13,7 +13,8 @@ import matplotlib.pyplot as plt # 词云
 import numpy as np # 矩阵运算
 import os # 系统操作
 from django.conf import settings # 设置
-from . import config
+from . import config # 自定义配置
+from django.db.models  import Min, Max
 
 #要爬取的网页链接
 baseurl = "https://movie.douban.com/top250?start="
@@ -26,6 +27,17 @@ find_num_judge = re.compile(r'<span>(\d*)人评价</span>') # 评价人数
 find_inq = re.compile(r'<span class="inq">(.*)</span>') # 简述
 find_other_info = re.compile(r'<p class="">(.*?)</p>', re.S) # 相关信息
 
+"""
+获取电影的评分范围
+"""
+def get_rating_range():
+    # 获取所有电影数据，并根据排名排序
+    # 获取 rating 的最小值和最大值
+    movies = Movies.objects.all()
+    return movies.aggregate(
+        min_rating=Min('rating'),
+        max_rating=Max('rating')
+    )
 """
 获取所有的电影
 """
@@ -118,7 +130,7 @@ def generate_word_cloud():
         mask=img_array,
         font_path=font_path
     )
-    string = _cut_dada()
+    string = ''.join(cut_dada()) # 获取词语（从数据库拼接简介）
     # 生成词云-从文本中选择生成的词云对象
     wc.generate(string)
     # 绘制词云-从第一个位置开始绘制
@@ -134,7 +146,7 @@ def generate_word_cloud():
 """
 切割词语
 """
-def _cut_dada():
+def cut_dada():
     # 词云所需的文字数据（从数据库获取）初始化一个空字符串来拼接inq内容
     inq_contents = ''
     # 查询所有Movies对象
@@ -144,8 +156,7 @@ def _cut_dada():
         inq_contents += movie.inq + ' '  # 在每个简述后面添加空格
     # 分词
     cut = jieba.cut(inq_contents)
-    string = ''.join(cut)
-    return string
+    return cut
 
 """
 得到指定一个URL的网页内容
