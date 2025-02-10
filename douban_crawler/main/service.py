@@ -4,6 +4,13 @@ import urllib.request, urllib.error  # 制定URL，获取网页数据
 import time
 import random # 随机数
 from .models import Movies # 电影模型
+import jieba # 分词
+from PIL import Image # 图片处理
+from wordcloud import WordCloud # 绘图数据可视化
+import matplotlib.pyplot as plt # 词云
+import numpy as np # 矩阵运算
+import os # 系统操作
+from django.conf import settings # 设置
 
 #要爬取的网页链接
 baseurl = "https://movie.douban.com/top250?start="
@@ -26,14 +33,14 @@ def get_movies():
 """
 爬取豆瓣top250电影数据
 """
-def get_data_from_web():
+def _get_data_from_web():
     movies = []  # 用来存储爬取的网页信息
     for i in range(0, 10):  # 调用获取页面信息的函数，10次
         # 随机延时
         delay = random.uniform(1, 5)
         time.sleep(delay)
         url = baseurl + str(i * 25)
-        html = ask_url(url)  # 保存获取到的网页源码
+        html = _ask_url(url)  # 保存获取到的网页源码
         # 逐一解析数据
         soup = BeautifulSoup(html, "html.parser")
         for item in soup.find_all('div', class_="item"):  # 查找符合要求的字符串
@@ -69,7 +76,7 @@ def refresh_movies():
     # 删除旧的数据
     Movies.objects.all().delete()
     # 获取爬取的数据
-    movies_data = get_data_from_web()
+    movies_data = _get_data_from_web()
     # 遍历数据并保存到数据库
     for index, movie_data in enumerate(movies_data):
         movie = Movies(
@@ -84,12 +91,63 @@ def refresh_movies():
             other_info=movie_data['other_info']
         )
         movie.save()  # 保存到数据库
+    # 刷新词云
+    generate_word_cloud()
     return len(movies_data)
+
+"""
+生成词云树图片
+"""
+def generate_word_cloud():
+    # 获取静态文件目录的绝对路径
+    static_dir = settings.STATICFILES_DIRS[0] if settings.STATICFILES_DIRS else settings.STATIC_ROOT
+    # 拼接遮罩图片的绝对路径
+    mask_image_path = os.path.join(static_dir, 'main', 'assets', 'img', 'tree.jpg')
+    # 打开遮罩图片
+    img = Image.open(mask_image_path)
+    # 将图片转变为图片数组
+    img_array = np.array(img)
+    # 拼接字体文件的绝对路径
+    font_path = os.path.join(static_dir, 'main', 'resource', 'STKAITI.TTF')
+    # 设置词云参数
+    wc = WordCloud(
+        background_color='white',
+        mask=img_array,
+        font_path=font_path
+    )
+    string = _cut_dada()
+    # 生成词云-从文本中选择生成的词云对象
+    wc.generate(string)
+    # 绘制词云-从第一个位置开始绘制
+    fig = plt.figure(1)
+    # 按照词云wc 的规则进行显示词云图片
+    plt.imshow(wc)
+    # 关闭坐标轴
+    plt.axis('off')
+    # 保存词云图片-设置分辨率
+    output_image_path = os.path.join(static_dir, 'main', 'assets', 'img', 'word_cloud.jpg')
+    plt.savefig(output_image_path, dpi=500)
+
+"""
+切割词语
+"""
+def _cut_dada():
+    # 词云所需的文字数据（从数据库获取）初始化一个空字符串来拼接inq内容
+    inq_contents = ''
+    # 查询所有Movies对象
+    movies = Movies.objects.all()
+    # 遍历所有电影对象，拼接inq字段
+    for movie in movies:
+        inq_contents += movie.inq + ' '  # 在每个简述后面添加空格
+    # 分词
+    cut = jieba.cut(inq_contents)
+    string = ''.join(cut)
+    return string
 
 """
 得到指定一个URL的网页内容
 """
-def ask_url(url):
+def _ask_url(url):
     # 模拟浏览器头部信息，向豆瓣服务器发送消息
     head = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"
