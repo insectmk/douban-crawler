@@ -81,11 +81,14 @@
 </html>
 <!-- 自定义JS -->
 <script type="text/javascript">
-const myChart = echarts.init(document.getElementById('charts-rating-judge'))
-
-const option = {
+// 图表-前十评分与评价人数
+const chartsRatingJudge = echarts.init(document.getElementById('charts-rating-judge'))
+// 图表-评分分布情况
+const chartsRatingStatistics = echarts.init(document.getElementById('charts-rating-statistics'))
+// 图表参数
+const optionRatingJudge = {
   title: {
-    text: 'TOP10评分统计'
+    text: '电影TOP10评分统计',
   },
   tooltip: {
     trigger: 'axis'
@@ -95,7 +98,7 @@ const option = {
   },
   xAxis: {
     type: 'category',
-    data: {{ names|safe }}  // 电影名列表
+    data: {{ chart_rating_judge.names|safe }}  // 电影名列表
   },
   yAxis: [
     {
@@ -122,16 +125,48 @@ const option = {
     {
       name: '评分',
       type: 'bar',
-      data: {{ ratings|safe }}  // 评分列表
+      data: {{ chart_rating_judge.ratings|safe }}  // 评分列表
     },
     {
       name: '评价人数',
       type: 'line',  // 使用折线图
       yAxisIndex: 1,
-      data: {{ num_judges|safe }}  // 评价人数列表
+      data: {{ chart_rating_judge.num_judges|safe }}  // 评价人数列表
     }
-  ]
+  ],
+  color: ['#66b3ff','#ff9999']  // 自定义颜色
 }
 
-myChart.setOption(option)
+const optionRatingStatistics = {
+  title: {
+    text: '电影评分统计',
+    subtext: '豆瓣电影TOP250评分分布情况',
+  },
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'right'
+  },
+  series: [
+    {
+      name: '评分分布',
+      type: 'pie',
+      radius: '50%',
+      data: {{ chart_rating_statistics.datas|safe }}, // 评分+计数
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }
+  ],
+  color: ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', '#ffb3e6', '#c2f0c2', '#ffccff', '#ffd699', '#ffb366']  // 自定义颜色
+};
+// 初始化图表
+chartsRatingStatistics.setOption(optionRatingStatistics)
+chartsRatingJudge.setOption(optionRatingJudge)
 </script>

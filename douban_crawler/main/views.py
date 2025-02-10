@@ -45,12 +45,17 @@ def movie(request):
 """
 def score(request):
     # 获取前10图表数据
-    movie_chart = service.get_movie_chart_rating_judge(10)
+    chart_rating_judge = service.get_movie_chart_rating_judge(10)
     # 给模版传递参数
     context = {
-        'names': movie_chart['names'],  # 电影名列表
-        'ratings': movie_chart['ratings'],  # 电影评分列表
-        'num_judges': movie_chart['num_judges'],  # 电影评论数列表
+        'chart_rating_judge': {
+            'names': chart_rating_judge['names'],  # 电影名列表
+            'ratings': chart_rating_judge['ratings'],  # 电影评分列表
+            'num_judges': chart_rating_judge['num_judges'],  # 电影评论数列表
+        },
+        'chart_rating_statistics': {
+            'datas': service.get_movie_chart_rating_statistics() # 评分+计数
+        }
     }
     # 渲染数据
     return render(request, "main/score.html", context)

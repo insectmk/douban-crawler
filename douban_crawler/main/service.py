@@ -28,6 +28,32 @@ find_num_judge = re.compile(r'<span>(\d*)人评价</span>') # 评价人数
 find_inq = re.compile(r'<span class="inq">(.*)</span>') # 简述
 find_other_info = re.compile(r'<p class="">(.*?)</p>', re.S) # 相关信息
 
+"""获取电影评分统计
+"""
+def get_movie_chart_rating_statistics():
+    # 创建一个字典来存储评分分布
+    distribution = {}
+
+    # 统计每个评分的电影数量
+    movies = Movies.objects.all()
+    for movie in movies:
+        if 1 <= movie.rating <= 10:
+            # 将评分转为字符串，以便作为字典的键使用
+            rating_key = round(movie.rating, 1)  # 保留一位小数
+            if rating_key not in distribution:
+                distribution[rating_key] = 0
+            distribution[rating_key] += 1
+
+    # 构建适合 ECharts 的数据结构
+    echarts_data = []
+    for rating in sorted(distribution.keys()):
+        echarts_data.append({
+            'value': distribution[rating],
+            'name': f'{rating}分'  # 使用'分'后缀
+        })
+
+    return echarts_data
+
 """获取电影前十图表数据（评分+评价数）
 """
 def get_movie_chart_rating_judge(top_num=10):
