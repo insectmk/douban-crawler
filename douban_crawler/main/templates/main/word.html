@@ -7,12 +7,12 @@
   <div class="container">
     <div class="row no-gutters">
       <div class="col-lg-6 video-box">
-        <img src="{% static 'main/assets/img/word_cloud.jpg' %}" class="img-fluid" alt="">
+        <img id="wordCloudImage" src="{% static 'main/assets/img/word_cloud.jpg' %}" class="img-fluid" alt="">
       </div>
       <div class="col-lg-6 d-flex flex-column justify-content-center about-content">
         <div class="section-title">
           <h2>词频统计</h2>
-          <p>根据250部电影的简述，提炼出词云树，可以更加清晰的了解用户对经典电影的理解。</p>
+          <p>根据250部电影的简述，提炼出词云树，快速了解排行电影的大致信息。</p>
         </div>
         <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
           <div class="icon"><i class="bx bx-fingerprint"></i></div>
@@ -23,4 +23,14 @@
     </div>
   </div>
 </section>
+{% endblock %}
+<!-- 自定义脚本 -->
+{% block script %}
+<script type="text/javascript">
+// 获取当前时间戳作为随机参数
+const randomParam = new Date().getTime()
+const imgElement = document.getElementById('wordCloudImage')
+// 更新图片的src，添加随机参数
+imgElement.src = imgElement.src + '?random=' + randomParam
+</script>
 {% endblock %}
