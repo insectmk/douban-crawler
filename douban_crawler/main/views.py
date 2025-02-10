@@ -21,7 +21,9 @@ def index(request):
 """
 def movie(request):
     # 给前端传递参数
-    context = {}
+    context = {
+        "movies": service.get_movies(), # 电影列表
+    }
     # 渲染数据
     return render(request, "main/movie.html", context)
 
