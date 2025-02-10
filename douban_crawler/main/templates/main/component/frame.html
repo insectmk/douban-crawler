@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Home</title>
+  <title>豆瓣电影TOP250数据分析</title>
   <meta content="" name="descriptison">
   <meta content="" name="keywords">
   <!-- 图标 -->
@@ -14,7 +14,7 @@
   <!-- 字体 -->
   <link href="{% static 'main/assets/vendor/google/fonts.css' %}" rel="stylesheet">
   <!-- 第三方CSS -->
-  <link href="{% static 'main/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'main/assets/vendor/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'main/assets/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
   <link href="{% static 'main/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
   <link href="{% static 'main/assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
@@ -26,28 +26,30 @@
 
 <body>
   <!-- ======= 头部 ======= -->
-  <header id="header">
-    <div class="container">
-      <div class="logo float-left">
-        <h1 class="text-light"><a href="{% url 'index' %}"><span>豆瓣电影TOP250</span></a></h1>
-      </div>
-      <!-- ======= 导航栏 ======= -->
-      <nav class="nav-menu float-right d-none d-lg-block">
-        <ul>
-          <li {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>
-            <a href="{% url 'index' %}">首页</a>
-          </li>
-          <li {% if request.resolver_match.url_name == 'movie' %}class="active"{% endif %}>
-            <a href="{% url 'movie' %}">电影</a>
-          </li>
-          <li {% if request.resolver_match.url_name == 'score' %}class="active"{% endif %}>
-            <a href="{% url 'score' %}">统计</a>
-          </li>
-          <li {% if request.resolver_match.url_name == 'word' %}class="active"{% endif %}>
-            <a href="{% url 'word' %}">词云</a>
-          </li>
-        </ul>
-      </nav>
+  <header id="header" class="bg-light-subtle">
+    <div class="container d-flex align-items-center justify-content-between">
+        <div class="logo">
+            <h1 class="text-light">
+                <a href="{% url 'index' %}"><span>豆瓣电影TOP250</span></a>
+            </h1>
+        </div>
+        <!-- ======= 导航栏 ======= -->
+        <nav class="nav-menu">
+          <ul class="d-flex list-unstyled mb-0">
+            <li class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+              <a href="{% url 'index' %}">首页</a>
+            </li>
+            <li class="{% if request.resolver_match.url_name == 'movie' %}active{% endif %}">
+              <a href="{% url 'movie' %}">电影</a>
+            </li>
+            <li class="{% if request.resolver_match.url_name == 'score' %}active{% endif %}">
+              <a href="{% url 'score' %}">统计</a>
+            </li>
+            <li class="{% if request.resolver_match.url_name == 'word' %}active{% endif %}">
+              <a href="{% url 'word' %}">词云</a>
+            </li>
+          </ul>
+        </nav>
     </div>
   </header>
   <!-- 主内容 -->
@@ -70,7 +72,7 @@
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
   <!-- 第三方JS -->
   <script src="{% static 'main/assets/vendor/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'main/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'main/assets/vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'main/assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
   <script src="{% static 'main/assets/vendor/jquery-sticky/jquery.sticky.js' %}"></script>
   <script src="{% static 'main/assets/vendor/venobox/venobox.min.js' %}"></script>
