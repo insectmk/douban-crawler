@@ -1,45 +1,102 @@
 {% extends './component/frame.html' %}
+{% load static %}
 
 {% block content %}
   <!-- ======= 首页标题 ======= -->
   <section id="team" class="team">
-    <div class="container">
-
-      <div class="section-title">
+    <div class="container" id="app">
+      <div class="section-title text-center">
         <h2>豆瓣电影TOP250数据分析</h2>
-        <p>应用Python爬虫/Django框架/Echarts插件/WordCloud等技术实现</p>
+        <p class="d-flex justify-content-center align-items-center">
+          此页面使用Django模版/Vue3前端框架/Element-Plus前端组件实现
+          <el-popconfirm @confirm="refreshMovies"
+                         title="是否确认重新爬取数据？此操作可能需要较长时间。"
+                         confirm-button-text="确认"
+                         cancel-button-text="取消"
+                         width="240">
+            <template #reference>
+              <button v-loading.fullscreen.lock="fullscreenLoading"
+                      element-loading-text="数据重爬中，请耐心等待..."
+                      type="button" class="btn btn-link">数据重爬</button>
+            </template>
+          </el-popconfirm>
+        </p>
       </div>
     </div>
   </section>
   <!-- ======= 小盒子 ======= -->
   <section class="counts section-bg">
-<div class="container">
-  <div class="row">
-    <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up">
-      <div class="count-box">
-        <i class="icofont-movie" style="color: #20b38e;"></i>
-        <span data-toggle="counter-up">{{ movies_count }}</span>
-        <p>经典电影</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up">
+        <div class="count-box">
+          <i class="icofont-movie" style="color: #20b38e;"></i>
+          <span data-toggle="counter-up">{{ movies_count }}</span>
+          <p>经典电影</p>
+        </div>
       </div>
-    </div>
 
-    <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="200">
-      <div class="count-box">
-        <i class="icofont-ui-rating" style="color: #c042ff;"></i>
-        <span>{{ rating_range }}</span>
-        <p>评分统计</p>
+      <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="200">
+        <div class="count-box">
+          <i class="icofont-ui-rating" style="color: #c042ff;"></i>
+          <span>{{ rating_range }}</span>
+          <p>评分统计</p>
+        </div>
       </div>
-    </div>
 
-    <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="400">
-      <div class="count-box">
-        <i class="icofont-book-alt" style="color: #46d1ff;"></i>
-        <span data-toggle="counter-up">{{ words_count }}</span>
-        <p>词汇统计</p>
+      <div class="col-lg-4 col-md-12 text-center" data-aos="fade-up" data-aos-delay="400">
+        <div class="count-box">
+          <i class="icofont-book-alt" style="color: #46d1ff;"></i>
+          <span data-toggle="counter-up">{{ words_count }}</span>
+          <p>词汇统计</p>
+        </div>
       </div>
     </div>
   </div>
-
-</div>
 </section>
+{% endblock %}
+<!-- ======= 自定义脚本 ======= -->
+{% block script %}
+<link rel="stylesheet" href="{% static 'main/assets/vendor/element-plus/index.css' %}" />
+<script src="{% static 'main/assets/vendor/vue/vue.global.js' %}"></script>
+<script src="{% static 'main/assets/vendor/element-plus/index.full.js' %}"></script>
+<script type="text/javascript">
+$(() => {
+const app = Vue.createApp({
+  data() {
+    return {
+      fullscreenLoading: false, // 加载控制
+    }
+  },
+  methods: {
+    refreshMovies() {//数据重爬
+      this.fullscreenLoading = true // 加载
+      $.ajax({
+        url: '{% url 'refresh_movies' %}',
+        method: 'GET',
+        success: (res) => {
+          this.fullscreenLoading = false // 关闭加载
+          ElementPlus.ElNotification({
+            title: '通知',
+            message: '数据重爬成功！',
+            type: 'success',
+          })
+          location.reload() // 刷新当前页面
+        },
+        error: (error) => {
+          this.fullscreenLoading = false // 关闭加载
+          ElementPlus.ElNotification({
+            title: '通知',
+            message: `数据重爬失败！${error}`,
+            type: 'error',
+          })
+        }
+      })
+    }
+  },
+})
+app.use(ElementPlus) //挂载element
+app.mount('#app')
+})
+</script>
 {% endblock %}
