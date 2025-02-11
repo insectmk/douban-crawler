@@ -1927,7 +1927,6 @@ var Vue = (function (exports) {
        * @internal
        */
       this.__v_isRef = true;
-      // TODO isolatedDeclarations "__v_isReadonly"
       // A computed is also a subscriber that tracks other deps
       /**
        * @internal
